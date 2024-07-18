@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html dir='rtl' lang='ar'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InTeXt</title>
+<style>
+body{
+  background: #ffffff;
+}
+ul{margin:0;padding:0}
+*{text-decoration:none;margin:0;padding:0;outline:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+#page a {
+width:110px;
+border:2px solid #ffffff;
+height:140px;
+display:inline-block;
+margin-bottom:10px;
+border-radius:8px;
+text-decoration:none;
+margin-right: 5px;
+margin-top:20px;
+}
+#page a img {
+height:140px;
+width:100%;
+border-radius:8px;
+padding-bottom:4px;
+}
+#page a p {
+text-align:center;
+font-size:13px;
+font-weight:600;
+}
+p{
+  width: 108px;
+  color: #fff;
+  border:2px solid #ba423a;
+  border-radius: 5px;
+  padding: 5px;
+  background: #ba423a;
+}
+</style>
+
+</head>
+<body>
+
+ <br>
+ <br>
+<div id="page">
+
+<a href="nombre.html" >
+<img src="img03.jpg"><p>أرقام</p></a>
+
+<a href="Tim.html" >
+<img src="img02.jpg"><p>وقت</p></a>
+
+<a href="Day .html" >
+<img src="img01.jpg"><p>أشهر السنة</p></a>
+
+<a href="colors.html" >
+<img src="img04.jpg"><p>الالوان</p></a>
+
+<a href="اتجاهات.html" >
+<img src="img05.jpg"><p>اتجاهات</p></a>
+
+<a href="صحة ودواء.html" >
+<img src="img06.jpg"><p>علاج</p></a>
+
+<a href="ادوات.html" >
+<img src="img08.jpg"><p>ادوات</p></a>
+
+<a href="جسم الإنسان.html" >
+<img src="img18.jpg"><p>جسم الانسان</p></a>
+
+<a href="أفراد العائلة.html" >
+<img src="img09.jpg"><p>العائلة</p></a>
+
+<a href="منزل.html" >
+<img src="img16.jpg"><p>المنزل</p></a>
+
+<a href="طعام.html" >
+<img src="img07.jpg"><p>طعام وشراب</p></a>
+
+<a href="طقس.html" >
+<img src="img15.jpg"><p>طقس</p></a>
+
+<a href="ملابس.html" >
+<img src="img11.jpg"><p>ملابس</p></a>
+
+<a href="job.html" >
+<img src="img17.jpg"><p>وظيفة</p></a>
+
+<a href="حيوانات.html" >
+<img src="img14.jpg"><p>حيوانات</p></a>
+
+<a href="المدينة.html" >
+<img src="img13.jpg"><p>المدينة</p></a>
+
+<a href="خضر وفواكه.html" >
+<img src="img12.jpg"><p>خضر وفواكه</p></a>
+
+<a href="طبيعة.html" >
+<img src="img10.jpg"><p>طبيعة</p></a>
+
+</div>
+ <br>
+ <br>
+ <br>
+
+ <script>
+       //NavBar
+       function hideIconBar() {
+         var iconBar = document.getElementById("iconBar");
+         var navigation = document.getElementById("navigation");
+         iconBar.setAttribute("style", "display:none;");
+         navigation.classList.remove("hide");
+       }
+ 
+       function showIconBar() {
+         var iconBar = document.getElementById("iconBar");
+         var navigation = document.getElementById("navigation");
+         iconBar.setAttribute("style", "display:block;");
+         navigation.classList.add("hide");
+       }
+ 
+       //Comment
+       function showComment() {
+         var commentArea = document.getElementById("comment-area");
+         commentArea.classList.remove("hide");
+       }
+ 
+       //Reply
+       function showReply() {
+         var replyArea = document.getElementById("reply-area");
+         replyArea.classList.remove("hide");
+       }
+     </script>      
+                 
+           
+</body>
+</html>
