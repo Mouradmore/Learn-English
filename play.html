@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Code Quiz</title>
+
+
+    <style>
+      /* CUSTOM + UTILITIES */
+body{
+  
+  background: #fff;
+}
+.card-title{
+  text-align: center;
+}
+.display-4{
+  color: red;
+}
+.h11{
+  color: #ba423a;
+  font-size: 1.5rem;
+}
+.card-body-1{
+  display: flex;
+  background: #ba423a;linear-gradient(to right, turquoise, rgb(8, 100, 148));
+color: #ffffff;
+  width: 100%;
+  height: 90px;
+  margin-top: 40px;
+  border-radius: 10px;
+}
+
+.btn-sm {
+    margin-top:2px;
+    margin-bottom:2px;
+    margin: 5px;
+}
+
+.btn-sm:hover {
+    cursor: pointer;
+}
+
+.btn-lg:hover {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.correct {
+  background: green;
+  width: 160px;
+  height: 80px;
+}
+
+.incorrect {
+ background-color: red; url("") ;
+}
+
+dt {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#cardNoPad {
+    padding: 0!important;
+}
+
+#highScoresList {
+    padding: 0!important;
+    list-style: none;
+}
+
+.high-score:hover {
+    transform: scale(1.025);
+    cursor: default;
+}
+
+#clearScores {
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+}
+
+#clearScores:hover {
+    cursor: pointer;
+}
+button{
+  border-radius: 5px;
+  padding: 20px;
+  background: #ffffff;
+  width: 8rem;
+  margin-left: 28px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  border: 1px solid black;
+  }
+  .mtm{
+     margin-left: 20px;
+  }
+  .sts{
+    margin-left: 180px;
+  }  
+  .card-body{
+    background: #ba423a;;linear-gradient(to right, turquoise, rgb(8, 100, 148));
+font-size: 1.5rem;
+    color: #ffffff;
+    width: 94%;
+    height: 45vh;
+    border-radius: 10px;
+    padding: 10px;
+  }
+    </style>
+</head>
+<body>
+<div id="gameClockContainer" class="col text-right">
+<h5 class="text-danger">
+<span id="timerDisplay"></span>
+        </h5></div>
+<div id="question-card" class="card w-50 mx-auto border-white">
+<div class="card-title">
+<h1 class="display-4"></h1><h1 class="h11">اجب عن الاسألة الصحيحة</h1>
+<h5 class="font-weight-light"></h5>
+   
+<div class="card-body">
+<h5 id="question">هذه هي بطاقة السؤال الأولى?</h5>
+<div class="btn-group-vertical">
+<button href="#" class="btn-sm btn-dark choice-text" data-number="1">Choice 1</button>
+<button href="#" class="btn-sm btn-dark choice-text" data-number="2">Choice 2</button>
+<button href="#" class="btn-sm btn-dark choice-text" data-number="3">Choice 3</button>
+<button href="#" class="btn-sm btn-dark choice-text" data-number="4">Choice 4</button>
+</div></div></div></div>
+  
+  <div>  
+  <div class="card-body-1">
+<div id="heads-up-display" class="col text-center">
+<div id="hud-item" class="mtm">
+<h4>Question</h4>
+<h4 id="questionCounter">
+  1/10</h4></div></div>
+<div id="heads-up-display" class="col text-center">
+<div id="hud-item" class="sts">
+<h4>Score</h4>
+<h4 id="score">00</h4></div></div>
+</div>
+
+    <script>
+      //DECLARED VARIABLES
+const question = document.getElementById("question");
+const choices = Array.from(document.getElementsByClassName("choice-text"));
+const questionCounterText = document.getElementById('questionCounter');
+const scoreText = document.getElementById('score');
+
+let currentQuestion = {};
+let acceptingAnswers = false;
+let score = 0;
+let questionCounter = 0;
+let availableQuestions = [];
+
+var timer = document.querySelector("timerDisplay");
+
+//QUESTION ARRAY TO DYNAMICALLY POPULATE THE Q CARD
+let questions = [
+    {
+        question: "أي واحدة تعني كلمة .ورق؟",
+        choice1: "High",
+        choice2: "Manager",
+        choice3: "Paper",
+        choice4: "Build",
+        answer: 3
+    },
+    {
+        question: "أي واحدة تعني كلمة .يساعد؟",
+        choice1: "Help",
+        choice2: "Agree",
+        choice3: "Manager",
+        choice4: "Ever",
+        answer: 1
+    },
+    {
+        question: "أي واحدة تعني   كلمة .وقت؟",
+        choice1: "Home",
+        choice2: "Time",
+        choice3: "Tree",
+        choice4: "Husband",
+        answer: 2
+    },
+    {
+        question: "أي واحدة تعني كلمة .هواء؟",
+        choice1: "Best",
+        choice2: "Force",
+        choice3: "Air",
+        choice4: "Agree",
+        answer: 3
+    },
+    {
+        question: "أي واحدة تعني كلمة .يتحرك؟",
+        choice1: "Watch",
+        choice2: "Measure",
+        choice3: "Best",
+        choice4: "Move",
+        answer: 4
+    },
+    {
+        question: "أي واحدة تعني كلمة .سيء؟",
+        choice1: "Today",
+        choice2: "East",
+        choice3: "Bad",
+        choice4: "Early",
+        answer: 3
+    },
+    {
+        question: "أي واحدة تعني كلمة .طعام؟",
+        choice1: "See",
+        choice2: "Stand",
+        choice3: "Water",
+        choice4: "Food",
+        answer: 4
+    },
+    {
+        question: "أي واحدة تعني كلمة .طبيعة",
+        choice1: "Nature",
+        choice2: "Measure",
+        choice3: "Watch",
+        choice4: "See",
+        answer: 1
+    },
+    {
+        question: "أي واحدة تعني كلمة .ساخن؟",
+        choice1: "High",
+        choice2: "Hard",
+        choice3: "Hear",
+        choice4: "Hot",
+        answer: 4
+    },
+    {
+        question: "أي واحدة تعني كلمة .ابنة؟",
+        choice1: "Build",
+        choice2: "Daughter",
+        choice3: "Manager",
+        choice4: "Subject",
+        answer: 2
+    },
+    {
+    question: "أي واحدة تعني كلمة يتصل؟. ",
+      choice1: "Call",
+      choice2: "Plan",
+      choice3: "Town",
+      choice4: "Store",
+      answer: 1
+    },
+    {
+      question: "أي واحدة تعني كلمة .الناس.",
+      choice1: "Man",
+      choice2: "People",
+      choice3: "Friend",
+      choice4: "child",
+      answer: 2
+    },
+    {
+      question: "أي واحدة تعني كلمة .حزين.",
+      choice1: "Fat",
+      choice2: "Sick",
+      choice3: "Sad",
+      choice4: "Fast",
+      answer: 3
+    },
+    {
+      question: "أي واحدة تعني كلمة .الشرق.",
+      choice1: "West",
+      choice2: "North",
+      choice3: "East",
+      choice4: "South",
+      answer: 3
+    },
+    {
+      question: "أي واحدة تعني كلمة .جميل.",
+      choice1: "Fat",
+      choice2: "Tall",
+      choice3: "Beautiful",
+      choice4: "ugly",
+      answer: 3
+    },
+    {
+      question: "أي واحدة تعني كلمة .مدينة.",
+      choice1: "Street",
+      choice2: "Country",
+      choice3: "Capital",
+      choice4: "city",
+      answer: 4
+    },
+    {
+      question: "أي واحدة تعني كلمة .قرد.",
+      choice1: "Monkey",
+      choice2: "frog",
+      choice3: "Cow",
+      choice4: "spider",
+      answer: 1
+    },
+    {
+      question: "أي واحدة تعني كلمة .مطر.",
+      choice1: "Weather",
+      choice2: "wind",
+      choice3: "Rain",
+      choice4: "ice",
+      answer: 3
+    },
+    {
+      question: "أي واحدة تعني كلمة .قميص.",
+      choice1: "socks",
+      choice2: "shirt",
+      choice3: "hat",
+      choice4: "shoes",
+      answer: 2
+    },
+    {
+      question: "أي واحدة تعني كلمة .مطبخ.",
+      choice1: "chair",
+      choice2: "Door",
+      choice3: "room",
+      choice4: "kitchen",
+      answer: 4
+    }
+];
+
+//CONSTANTS
+const CORRECT_BONUS = 5;
+const MAX_QUESTIONS = 20;
+
+    //GAME PLAY STRUCTURE
+    startGame = () => {
+    questionCounter = 0;
+    score = 0;
+    availableQuestions = [...questions];
+    getNewQuestion();
+};
+
+    getNewQuestion = () => {
+    if (availableQuestions.length == 0 || questionCounter >= MAX_QUESTIONS) {
+        localStorage.setItem("mostRecentScore", score);
+        //GO TO END GAME PAGE
+        return window.location.assign("./end.html");
+        }
+
+    questionCounter++;
+    questionCounterText.innerText = questionCounter + "/" + MAX_QUESTIONS;
+
+    const questionIndex = Math.floor(Math.random() * availableQuestions.length);
+    currentQuestion = availableQuestions[questionIndex];
+    question.innerText = currentQuestion.question;
+
+    choices.forEach( choice => {
+        const number = choice.dataset["number"];
+        choice.innerText = currentQuestion["choice" + number];
+    });
+
+    availableQuestions.splice(questionIndex, 1);
+
+    acceptingAnswers = true;
+};
+
+    choices.forEach(choice => {
+    choice.addEventListener("click", e => {
+    if(!acceptingAnswers) return;
+
+    acceptingAnswers = false;
+    const selectedChoice = e.target;
+    const selectedAnswer = selectedChoice.dataset["number"];
+    
+    const classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
+
+        if (classToApply === "correct") {
+        incrementScore(CORRECT_BONUS);
+        }
+
+    selectedChoice.classList.add(classToApply);
+
+    //CREATES SLIGHT DELAY BETWEEN QUESTIONS
+    setTimeout( () => {
+        selectedChoice.classList.remove(classToApply);
+        getNewQuestion();
+        }, 500);
+
+    });
+});
+    //KEEPS SCORE
+    incrementScore = num => {
+    score += num;
+    scoreText.innerText = score;
+};
+    //TRIGGERS GAME
+    startGame();
+
+    //SETTING THE TIMER
+    (function() {
+        var sec = availableQuestions.length * 15;
+        function startTimer(){
+            var timer = setInterval(function(){
+                sec--;
+                document.getElementById('timerDisplay').innerHTML='00:'+sec;
+                if (sec < 0) {
+                    clearInterval(timer);
+                    alert("Time is up!")
+                }
+            }, 1000);
+        }
+        document.getElementsByClassName('incorrect').addEventListener('click', function() {
+            sec -= 5;
+            document.getElementById('timerDisplay').innerHTML='00:'+sec;
+        });
+    })();
+    
+window.onload = startTimer();
+    </script>
+</body>
+</html>
