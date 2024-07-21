@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Random Clock</title>
+ <style>
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}      
+body{
+ font-family: "Lexend", sans-serif;
+  background: #ffffff;
+  color: #e5ebf3;
+}      
+.slide .content {
+  position: absolute;
+  top: 400px;
+  left: 25px;
+  width: 90%;
+  height: 70vh;
+  opacity: 0;
+  background: #ba423a;
+margin-left: -10px;
+  color: #ffffff;
+  padding: 2rem;
+  line-height: 1.3;
+  border-radius: 10px;
+}
+.slide .content p {
+  margin-bottom: 0.625rem;
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+.slide.current .content {
+  opacity: 1;
+  transform: translateY(-300px);
+  /*transition: all 0.7s ease-in-out;*/
+}
+    </style>   
+	<style>
+#wallclock,
+#numclock {
+	margin: auto;
+	width: fit-content;
+}
+#numclock {
+	font-size: 75px;
+	text-align: center;
+}
+p {
+	font-size: 35px;
+	display: none;
+	margin: 2% 5% 2% 5%;
+	color: #333;
+}
+input[type=button] {
+	font-size: 40px;
+	border-radius: 10px;
+	color: #ba423a;
+	border: 1px solid black;
+	width: 100px;
+}
+#buttons,
+#next {
+	margin-left:50px;
+}
+#buttons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#play {
+	margin-left: 50px;
+}
+#ampm {
+	font-size: 20px;
+	display: block;
+	margin: 1% 0 0 0;
+}
+.external {
+	display: table;
+	position: absolute;
+  top: 0;
+	left: 0;
+	width: 100%;
+}
+.middle {
+	display: table-cell;
+	vertical-align: middle;
+}
+.internal {
+	margin-left: auto;
+	margin-right: auto;
+}
+#a {
+	width: 10.0em;
+	height: 10.0em;
+	position: relative;
+	border-radius: 5.0em;
+	background: #ccc;
+	box-shadow:
+		inset 0.05em -0.05em 0 #333,
+		/*ccc*/
+		inset 0.17em -0.17em 0 #555,
+		inset -0.03em -0.04em 0 #333,
+		/*999*/
+		inset -0.03em 0.02em 0 #333,
+		/*ccc*/
+		inset -0.1em -0.1em 0 #555,
+		0.1em 0.3em 0.2em rgba(0, 0, 0, 0.3);
+}
+#b {
+	width: 9.4em;
+	height: 9.4em;
+	top: 0.3em;
+	left: 0.3em;
+	position: relative;
+	border-radius: 4.7em;
+	background: #fff;
+	box-shadow:
+		inset 0.04em 0 0 #fff,
+		inset 0 -0.06em 0 #ddd,
+		inset 0.16em -0.08em 0 #222,
+		inset -0.16em 0.08em 0 #222,
+		inset 0.2em 0.2em 0 #222,
+		0.06em -0.03em 0 #999,
+		-0.1em 0.1em 0 #777,
+		-0.13em -0.2em 0 #fff,
+		0.13em 0.2em 0 #222,
+		0.13em 0.3em 0 #333;
+}
+#c {
+	width: 8.9em;
+	height: 8.9em;
+	top: 0.25em;
+	left: 0.25em;
+	position: relative;
+	border-radius: 4.45em;
+	background: #eed;
+	box-shadow:
+		inset 0.15em 0.2em 0.05em rgba(0, 0, 0, 0.4),
+		inset 0.2em 0.4em 0.2em rgba(0, 0, 0, 0.3),
+		inset 0 0.05em 0.3em rgba(0, 0, 0, 0.1),
+		-0.16em 0.08em 0 #444,
+		0.16em -0.08em 0 #444;
+}
+#d {
+	width: 8.8em;
+	height: 8.8em;
+	top: 0.05em;
+	left: 0.05em;
+	position: relative;
+	border-radius: 4.4em;
+}
+#e {
+	width: 8.18em;
+	height: 8.18em;
+	padding-top: 4.09em;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	left: 0.29em;
+	top: 0.29em;
+	position: absolute;
+	border: solid 0.04em rgba(0, 0, 0, 0.5);
+	border-radius: 4.09em;
+}
+#ii {
+	padding-left: 4.34em;
+	position: absolute;
+}
+b,
+i {
+	height: 8.2em;
+	position: absolute;
+	display: block;
+}
+b {
+	border: solid 0 #222;
+	border-width: 0.3em 0;
+	width: 0.12em;
+}
+i {
+	border: solid 0 rgba(0, 0, 0, 0.5);
+	border-width: 0.3em 0;
+	width: 0.04em;
+}
+b>i,
+i>i {
+	transform: rotate(6deg);
+	margin-top: -0.3em;
+}
+b>b {
+	transform: rotate(30deg);
+	margin-top: -0.3em;
+}
+b>i {
+	left: 0.03em;
+}
+#f,
+#g {
+	font: 0.5em/0.5em WallClock, sans-serif;
+	text-align: center;
+	width: 2.8em;
+	color: #222;
+}
+#g>u>u {
+	letter-spacing: 0.1em;
+}
+#g>u>u>u {
+	letter-spacing: 0;
+}
+u {
+	display: block;
+	line-height: 1em;
+	text-decoration: none;
+}
+u>u>u>u {
+	margin: 0.5em -0.55em;
+	padding: 0 0.05em;
+}
+u>u>u {
+	margin: 0.0em -1.75em;
+	padding: 0 0.7em;
+}
+u>u {
+	margin: -0.55em 0;
+	text-align: right;
+	padding: 0 1.65em;
+}
+#f {
+	margin-top: -3.37em;
+}
+#g {
+	margin-top: -6em;
+}
+#g u>u {
+	text-align: left;
+}
+#q {
+	font: 0.22em/1em Segoe UI, Helvetica, sans-serif;
+	text-align: center;
+	margin-top: -11.5em;
+	color: #555;
+}
+.mm,
+.hh {
+	width: 8.0em;
+	height: 8.0em;
+	top: 0.4em;
+	left: 0.4em;
+	position: absolute;
+}
+.m {
+	height: 4.8em;
+	left: 3.89em;
+	width: 0.22em;
+	position: relative;
+	background: #222;
+	border: 0 0 3.2em 0;
+	outline: 1px solid transparent;
+}
+.mr {
+	width: 0.5em;
+	height: 0.5em;
+	background: #222;
+	margin: -1.05em 0 0 3.74em;
+	border-radius: 0.25em;
+}
+.h {
+	width: 0.3em;
+	height: 3.4em;
+	left: 3.85em;
+	position: relative;
+	background: #222;
+	margin-top: 1.3em;
+	outline: 1px solid transparent;
+}
+#sh {
+	width: 8.0em;
+	height: 8.0em;
+	top: 0.2em;
+	left: 0.1em;
+	position: absolute;
+	/*display:none;*/
+}
+#sh .m,
+#sh .h,
+#sh .mr {
+	background: #ddc;
+	box-shadow: 0 0 0.05em #ddc, 0 0 0.025em #ddc;
+}
+#k {
+	width: 8.8em;
+	height: 8.8em;
+	position: absolute;
+	border-radius: 4.4em;
+	box-shadow: inset 0.45em 0.9em 0.05em rgba(250, 252, 253, 0.2);
+}
+@font-face {
+	font-family: 'WallClock';
+	src:
+		url() format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+#clock {
+	position: relative;
+	left: 50%;
+	margin-left: -5em;
+}
+ .sts{
+    height: 70vh;  
+      }
+  .mtm{
+    border: 1px solid #000;
+    border-radius: 50%;
+    background: #ffffff;
+  }
+	</style>
+</head>
+<body>
+  <div class="sts">
+<!--section class="questions"-->
+    <div class="slide current">
+      <div class="content">
+      <!-- title -->
+	<div class="external">
+		<div class="middle">
+			<div class="internal">
+<div class="section-center">
+  <!--article class="question"-->
+    <div class="question-title">
+    </div>			
+				<div id='change'></div>
+<script id='numberc' type='text/html'></script>
+<div id='numclock'>
+ <span id='numhr'></span>
+   <span>:</span>
+<span id='nummin'></span>
+  <span id='ampm1'></span>
+</div>
+</script>
+<div id="buttons">
+<input type="button" id="butt" value="إجابة" onclick="myFunction()" hidden/>
+<div class="ntn">
+<svg id="play" onclick="onClickPlay()" class="mtm" width="60" height="60"
+						viewBox="0 0 20 20">
+<path style="fill:black"
+d="M9.344,2.593c-0.253-0.104-0.547-0.045-0.743,0.15L4.486,6.887H1.313c-0.377,0-0.681,0.305-0.681,0.681v4.916c0,0.377,0.304,0.681,0.681,0.681h3.154l4.137,4.142c0.13,0.132,0.304,0.201,0.482,0.201c0.088,0,0.176-0.017,0.261-0.052c0.254-0.105,0.42-0.354,0.42-0.629L9.765,3.224C9.765,2.947,9.599,2.699,9.344,2.593z M5.233,12.003c-0.128-0.127-0.302-0.2-0.483-0.2H1.994V8.249h2.774c0.182,0,0.355-0.072,0.483-0.201l3.151-3.173l0.001,10.305L5.233,12.003z">
+						</path>
+<path style="fill:black"
+d="M16.434,10.007c0-2.553-1.518-4.853-3.869-5.858C12.223,4,11.821,4.16,11.672,4.506c-0.148,0.346,0.013,0.746,0.359,0.894c1.846,0.793,3.041,2.6,3.041,4.608c0,1.997-1.188,3.799-3.025,4.592c-0.346,0.149-0.505,0.551-0.356,0.895c0.112,0.258,0.362,0.411,0.625,0.411c0.091,0,0.181-0.017,0.269-0.056C14.922,14.843,16.434,12.548,16.434,10.007z">
+						</path>
+<path style="fill:black"
+d="M13.418,10.005c0-1.349-0.802-2.559-2.042-3.086c-0.346-0.144-0.745,0.015-0.894,0.362c-0.146,0.346,0.016,0.745,0.362,0.893c0.737,0.312,1.212,1.031,1.212,1.832c0,0.792-0.471,1.509-1.2,1.825c-0.345,0.149-0.504,0.551-0.352,0.895c0.112,0.257,0.362,0.41,0.625,0.41c0.091,0,0.181-0.017,0.27-0.057C12.625,12.545,13.418,11.339,13.418,10.005z">
+						</path>
+						<path style="fill:black"
+		d="M13.724,1.453c-0.345-0.15-0.746,0.012-0.895,0.358c-0.148,0.346,0.013,0.745,0.358,0.894c2.928,1.256,4.819,4.122,4.819,7.303c0,3.171-1.886,6.031-4.802,7.289c-0.346,0.149-0.505,0.55-0.356,0.894c0.112,0.258,0.362,0.412,0.626,0.412c0.09,0,0.181-0.019,0.269-0.056c3.419-1.474,5.626-4.826,5.626-8.54C19.368,6.282,17.152,2.923,13.724,1.453z">
+						</path>
+					</svg></div>
+
+			</div>
+			<div>
+<p id="ans"></p>
+		</div>
+<input type="button" id="next" value="next" onclick="re()" />
+</div>
+	
+	<!--/article>
+	</section-->
+	</div>
+			</div>
+  </div>        
+          
+	<script src="https://code.responsivevoice.org/responsivevoice.js?key=E1ZIKBNJ"></script>
+	<script>
+	  function thething() {
+  const funclist = [ranwall, rannum];
+  const funcnum = Math.floor(Math.random() * funclist.length);
+  const htmllist = ['wallc', 'numberc'];
+
+  document.getElementById('change').innerHTML = document.getElementById(htmllist[funcnum]).innerHTML;
+
+
+  function ranwall() {
+
+    const mindeg = ["0", "30", "60", "90", "120", "150", "180", "210", "240", "270", "300", "330"];
+    const ranmin = Math.floor(Math.random() * mindeg.length);
+    let y = mindeg[ranmin];
+
+    let x = Math.floor((Math.random() * 12) + 1);
+
+    var z = x * 30 + y * 30 / 360;
+var hour = document.querySelectorAll(".hh");
+    hour.forEach(hr => {
+      hr.style.transform = 'rotate(' + z + 'deg)';
+    });
+    
+    var minute = document.querySelectorAll(".mm");
+    minute.forEach(min => {
+      min.style.transform = 'rotate(' + y + 'deg)';
+    });
+
+
+
+    
+    const ap = ["AM", "PM"];
+    const ranap = Math.floor(Math.random() * ap.length);
+    document.getElementById('ampm').innerHTML = ap[ranap];
+
+    const hrans = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+    const minans = ["","5 minutes past ", "10 minutes past ", "a quarter past ", "20 minutes past ", "25 minutes past ", "half past ", "35 minutes to ", "20 minutes to ", "a quarter to ", "10 minutes to ", "5 minutes to "];
+
+    if (ranmin == 0) {
+      if (x == 12) {
+        if (ranap == 0) {
+          var ans = 'midnight';
+        } else if (ranap == 1) {
+          var ans = 'noon';
+        }
+      } else {
+        var ans = hrans[x] + " o'clock";
+      }
+    } else if (ranmin <= 6) {
+      var ans = minans[ranmin] + hrans[x];
+    } else if (ranmin > 6) {
+      if (x == 12) {
+        var ans = minans[ranmin] + 'one';
+      } else {
+        var ans = minans[ranmin] + hrans[x + 1];
+      }
+    }
+    if (x == 12 && ranmin == 0) {
+      var suffix = '';
+    } else {
+      if (ranap == 0) {
+        var suffix = ' in the morning';
+      } else if (ranap == 1) {
+        if (x < 5 || x == 12) {
+          var suffix = ' in the afternoon';
+        } else if (x >= 5 && x < 7) {
+          var suffix = ' in the evening';
+        } else if (x >= 7 && x < 12) {
+          var suffix = ' at night';
+        }
+      }
+    }
+    document.getElementById('ans').innerHTML = '&zwj;' + ans + suffix;
+  }
+  function rannum() {
+    const hrnum = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    const ranhr = Math.floor(Math.random() * hrnum.length);
+    let x = ranhr + 1;
+
+    const minnum = ["00","05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+    const ranmin = Math.floor(Math.random() * minnum.length);
+    let y = minnum[ranmin];
+    document.getElementById('numhr').innerHTML = '&zwj;' + hrnum[ranhr];
+    document.getElementById('nummin').innerHTML = '&zwj;' + y;
+    const ap = ["AM", "PM"];
+    const ranap = Math.floor(Math.random() * ap.length);
+    document.getElementById('ampm1').innerHTML = '&zwj;' + ap[ranap];
+    const hrans = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+    const minans = ["","5 minutes past ", "10 minutes past ", "a quarter past ", "20 minutes past ", "25 minutes past ", "half past ", "25 minutes to ", "20 minutes to ", "a quarter to ", "10 minutes to ", "5 minutes to "];
+
+    if (ranmin == 0) {
+      if (x == 12) {
+        if (ranap == 0) {
+          var ans = 'midnight';
+        } else if (ranap == 1) {
+          var ans = 'noon';
+        }
+      } else {
+        var ans = hrans[x] + " o'clock";
+      }
+    } else if (ranmin <= 6) {
+      var ans = minans[ranmin] + hrans[x];
+    } else if (ranmin > 6) {
+      if (x == 12) {
+        var ans = minans[ranmin] + 'one';
+      } else {
+        var ans = minans[ranmin] + hrans[x + 1];
+      }
+    }
+    if (x == 12 && ranmin == 0) {
+      var suffix = '';
+    } else {
+      if (ranap == 0) {
+        var suffix = ' in the morning';
+      } else if (ranap == 1) {
+        if (x < 5 || x == 12) {
+          var suffix = ' in the afternoon';
+        } else if (x >= 5 && x < 7) {
+          var suffix = ' in the evening';
+        } else if (x >= 7 && x < 12) {
+          var suffix = ' at night';
+        }
+      }
+    }
+    document.getElementById('ans').innerHTML = '&zwj;' + ans + suffix;
+  }
+  funclist[funcnum]();
+  var e = document.getElementById('ans');
+  if (e.style.display == 'block')
+    e.style.display = 'block';
+  else
+    e.style.display = 'block';
+}
+thething();
+function re() {
+  thething();
+}
+function myFunction() {
+  var e = document.getElementById('ans');
+  if (e.style.display == 'block')
+    e.style.display = 'block';
+  else
+    e.style.display = 'flex';
+}
+function onClickPlay() {
+  responsiveVoice.speak(document.getElementById("ans").textContent);
+}
+	</script>
+</body>
+</html>
